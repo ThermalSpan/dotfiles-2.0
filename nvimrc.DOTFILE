@@ -1,0 +1,138 @@
+""""""""""""""""""
+"NeoBundle Setup
+""""""""""""""""""
+"-- Not sure if I need this if statement in a .nvimrc?
+if has('vim_starting')
+   if &compatible
+     set nocompatible               " Be iMproved
+   endif
+
+   "-- Required:
+   set runtimepath+=~/.nvim/bundle/neobundle.vim/
+endif
+
+"-- Required:
+call neobundle#begin(expand('~/.nvim/bundle/'))
+
+"-- Let NeoBundle manage NeoBundle
+"-- Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+"-- Here be the plugins I desire
+
+NeoBundle 'bling/vim-airline'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'raichoo/haskell-vim'
+NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'sophacles/vim-processing'
+NeoBundle 'benekestah/neomake'
+
+call neobundle#end()
+
+"-- Required:
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+
+""""""""""""""""
+" Macros
+""""""""""""""""
+"Toggle line numbers
+nmap \l :setlocal number!<CR>
+nmap \g :GitGutterToggle <CR>
+nmap \s :call ToggleSyntastic() <CR>
+nmap \S :call ClearSyntastic() <CR>         
+
+"-- make j and k linewise
+map j gj
+map k gk
+
+"-- Tabs are 4 Spaces
+filetype plugin indent on
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+"""""""""""""""""
+" Functions
+"""""""""""""""""
+"-- The following is for my Syntastic workflow. 
+let g:Syntastic_is_enabled = -1
+
+function ToggleSyntastic()
+    if g:Syntastic_is_enabled == 1
+        let g:Syntastic_is_enabled = 0
+        execute 'lclose'
+    elseif g:Syntastic_is_enabled == 0
+        let g:Syntastic_is_enabled = 1
+        execute "Error"
+    else 
+        let g:Syntastic_is_enabled = 1
+        execute 'SyntasticCheck'
+    endif
+endfunction
+
+function ClearSyntastic()
+    let g:Syntastic_is_enabled = -1
+    execute 'SyntasticReset'
+endfunction
+
+""""""""""""""""
+" Misc
+""""""""""""""""
+syntax enable
+
+let g:gitgutter_enabled = 0
+
+"""""""""""""""""
+" Airline Setup
+"""""""""""""""""
+"-- Airline all the time
+set laststatus=2
+
+"""""""""""""""""
+" Syntastic Setup
+"""""""""""""""""
+"See https://github.com/scrooloose/syntastic/blob/master/doc/syntastic.txt 
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntsticStatusLineFlg()}
+set statusline+=%*
+
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_always_populte_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_jump = 3
+
+let g:syntastic_mode_map = {
+    \ "mode": "passive",
+    \ "passive_filetypes": ["haskell", "tex"] }
+
+let g:syntastic_haskell_checkers = ['ghc-mod', 'hlint', 'hdevtools', 'scan']
+let g:syntastic_tex_checkers = ['lacheck']
+
+""""""""""""""""""""
+" haskell-vim setup
+""""""""""""""""""""
+let g:haskell_indent_if = 3
+let g:haskell_indent_case = 2
+let g:haskell_indent_let = 4
+let g:haskell_indent_where = 6
+let g:haskell_indent_do = 3
+let g:haskell_indent_in = 1
+
+"""""""""""""""""""
+" NeoMake
+"""""""""""""""""""
+
+"-- Processing maker, in progress
+let g:neomake_pde_jproc_maker = {
+    \ 'args': ['--run', '--force', '--sketch="%:p"', '--output="%:p/output"'],
+    \ 'exe': 'processing-java',
+    \ }
+
+ 
+

@@ -1,0 +1,4 @@
+.swp
+nvim.DOTDIR/bundle/**
+!nvim.DOTRIR/bundle/NeoBundle.lock
+!nvim.DOTDIR/bundle/neobundle.vim
