@@ -129,10 +129,14 @@ let g:haskell_indent_in = 1
 """""""""""""""""""
 
 "-- Processing maker, in progress
-let g:neomake_pde_jproc_maker = {
-    \ 'args': ['--run', '--force', '--sketch="%:p"', '--output="%:p/output"'],
+let g:neomake_processing_jproc_maker = {
+    \ 'args': ['--run', '--force', '--sketch="%:h"', '--output="%:h/output"'],
     \ 'exe': 'processing-java',
+    \ 'errorformat': '%f:%l:%c:%m',
     \ }
+
+let g:neomake_processing_enabled_makers = ['jproc']
+
 
  
 
