@@ -27,6 +27,7 @@ NeoBundle 'raichoo/haskell-vim'
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'sophacles/vim-processing'
 NeoBundle 'benekestah/neomake'
+NeoBundle 'ThermalSpan/llvm.vim'
 
 call neobundle#end()
 
@@ -55,6 +56,8 @@ filetype plugin indent on
 set tabstop=4
 set shiftwidth=4
 set expandtab
+"-- In Makefiles, don't expand tabs to spaces, since we need the actual tabs
+autocmd FileType make set noexpandtab
 
 """""""""""""""""
 " Functions
@@ -79,6 +82,9 @@ function ClearSyntastic()
     let g:Syntastic_is_enabled = -1
     execute 'SyntasticReset'
 endfunction
+
+" Delete trailing whitespace and tabs at the end of each line
+command! DeleteTrailingWs :%s/\s\+$//
 
 """"""""""""""""
 " Misc
@@ -123,6 +129,14 @@ let g:haskell_indent_let = 4
 let g:haskell_indent_where = 6
 let g:haskell_indent_do = 3
 let g:haskell_indent_in = 1
+
+"""""""""""""""""""
+" llvm.vim
+"""""""""""""""""""
+augroup filetype
+    au! BufRead,BufNewFile *.ll     set filetype=llvm
+    au! BufRead,BufNewFile *.llvm   set filetype=llvm
+augroup END
 
 """""""""""""""""""
 " NeoMake
